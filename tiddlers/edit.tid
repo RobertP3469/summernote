@@ -1,0 +1,214 @@
+/*\
+title: $:/RobertP3469/modules/widgets/edit.js
+type: application/javascript
+module-type: widget
+\*/
+
+if($tw.browser )   {
+	(function(){
+		"use strict";
+		
+		var ready = false;
+		
+		var Widget = require("$:/core/modules/widgets/widget.js").widget;
+		
+		var EditHtmlWidget = function(parseTreeNode,options) {
+			this.initialise(parseTreeNode,options);
+		};
+		
+		/*
+		Inherit from the base widget class
+		*/
+		EditHtmlWidget.prototype = new Widget();
+		
+		EditHtmlWidget.prototype.postRender = function() {
+
+			alert('EditHtmlWidget.prototype.postRender');
+		
+		};
+		
+		EditHtmlWidget.prototype.render = function(parent,nextSibling) {
+			alert('EditHtmlWidget.prototype.render');
+		};	
+		
+		/*
+		Get the tiddler being edited and current value
+		*/
+		EditHtmlWidget.prototype.getEditInfo = function() {
+			// Get the edit value
+			var self = this,
+				value,
+				update;
+			if(this.editIndex) {
+				value = this.wiki.extractTiddlerDataItem(this.editTitle,this.editIndex,this.editDefault);
+				update = function(value) {
+					var data = self.wiki.getTiddlerData(self.editTitle,{});
+					if(data[self.editIndex] !== value) {
+						data[self.editIndex] = value;
+						self.wiki.setTiddlerData(self.editTitle,data);
+					}
+				};
+			} else {
+				// Get the current tiddler and the field name
+				var tiddler = this.wiki.getTiddler(this.editTitle);
+				if(tiddler) {
+					// If we've got a tiddler, the value to display is the field string value
+					value = tiddler.getFieldString(this.editField);
+				} else {
+					// Otherwise, we need to construct a default value for the editor
+					switch(this.editField) {
+						case "text":
+							value = "Type the text for the tiddler '" + this.editTitle + "'";
+							break;
+						case "title":
+							value = this.editTitle;
+							break;
+						default:
+							value = "";
+							break;
+					}
+					if (this.editDefault !== undefined) {
+						value = this.editDefault;
+					}
+				}
+				update = function(value) {
+					var tiddler = self.wiki.getTiddler(self.editTitle),
+						updateFields = {
+							title: self.editTitle
+						};
+					updateFields[self.editField] = value;
+					self.wiki.addTiddler(new $tw.Tiddler(self.wiki.getCreationFields(),tiddler,updateFields,self.wiki.getModificationFields()));
+				};
+			}
+			return {value: value, update: update};
+		};		
+		
+		EditHtmlWidget.prototype.getAttribute = function () {
+			//parameters are passed to parent so get them from there
+			return this.parentWidget.getAttribute.apply(this.parentWidget, arguments);
+		}
+		 
+		EditHtmlWidget.prototype.execute = function() {
+			this.editTitle = this.getAttribute("tiddler",this.getVariable("currentTiddler"));
+			this.editField = this.getAttribute("field","text");
+			this.editIndex = this.getAttribute("index");
+			this.editDefault = this.getAttribute("default");
+			this.editClass = this.getAttribute("class");
+			this.editPlaceholder = this.getAttribute("placeholder");
+			this.editFocusPopup = this.getAttribute("focusPopup");
+			this.onkeyupdate = this.getAttribute("onkeyupdate","yes"); 
+			// Get the content type of the thing we're editing
+			this.edittype = "";
+			if(this.editField === "text") {
+				var tiddler = this.wiki.getTiddler(this.editTitle);
+				if(tiddler) {
+					this.edittype = tiddler.fields.type;
+				}
+			}
+			// only textarea can be visually edited
+			this.editTag = "textarea"
+		};
+
+		/*
+		Handle a dom "input" event
+		*/
+		EditHtmlWidget.prototype.handleInputEvent = function(event) {
+			this.saveChanges(this.domNodes[0].firstChild.value);
+			//this.fixHeight();
+			return true;
+		};
+
+		EditHtmlWidget.prototype.handleFocusEvent = function(event) {
+			if(this.editFocusPopup) {
+				$tw.popup.triggerPopup({
+					domNode: this.domNodes[0].firstChild,
+					title: this.editFocusPopup,
+					wiki: this.wiki,
+					force: true
+				});
+			}
+			return true;
+		};		
+		
+		EditHtmlWidget.prototype.saveChanges = function(text) {
+			var editInfo = this.getEditInfo();
+			if(text !== editInfo.value) {
+				editInfo.update(text);
+			}
+		};		
+		
+		exports["__!summernotebase__"] = EditHtmlWidget;//choose an unparseable name to make widget 'private'
+		
+		if($tw.browser)  {
+			var head = document.getElementsByTagName('head')[0];
+			var js = document.createElement("script");
+			js.type = "text/javascript";
+			js.onload = function() {  
+				//do non-tree initialisation
+				//startup();
+				alert('line 150');
+				ready = true;//BJ do this in startup
+				//broadcast ready message
+				$tw.wiki.setTextReference("$:/temp/summernote","ready");
+			}
+			head.appendChild(js);
+		}	
+		
+		
+		var LoadWidget = function(parseTreeNode,options) {
+			this.initialise(parseTreeNode,options);
+		};
+		 
+		LoadWidget.prototype = new Widget();
+
+
+
+		LoadWidget.prototype.getLoadingMessage = function() {
+			var message = "<h2>loading summernote</h2>",
+				parser = this.wiki.parseText("text/vnd.tiddlywiki",message,{parseAsInline: true});
+			if(parser) {
+				return parser.tree;
+			} else {
+				return [];
+			}
+		};		
+		
+		LoadWidget.prototype.render = function(parent,nextSibling) {
+			alert('LoadWidget.prototype.render');
+			this.parentDomNode = parent;
+			this.computeAttributes();
+			this.execute();
+			this.renderChildren(parent,nextSibling);
+		};
+		
+		LoadWidget.prototype.execute = function() {
+			alert('LoadWidget.prototype.execute');
+			if (ready) {
+				// insert the real widget
+				this.makeChildWidgets([{type: "__!summernotebase__"}]);
+			}
+			else this.makeChildWidgets(this.getLoadingMessage());
+		};		
+		
+		LoadWidget.prototype.refresh = function(changedTiddlers) {
+			var changedAttributes = this.computeAttributes();
+			// Refresh if an attribute has changed, or the 'lib is loaded' is indicated
+			if(Object.keys(changedAttributes).length || changedTiddlers["$:/temp/summernote"]) {
+				this.refreshSelf();
+				return true;
+			} else {
+				return this.refreshChildren(changedTiddlers);		
+			}
+		};
+
+		LoadWidget.prototype.invokeAction = function(triggeringWidget,event) {
+			this.invokeActions(this,event);
+			return true; // Action was invoked
+		};
+
+
+		exports["edit-html"] = LoadWidget;
+		
+		
+	})();
+}/* end if($tw.browser )  */
