@@ -1,4 +1,6 @@
 title: $:/plugins/RobertP3469/summernote/readme
 caption: Readme
 
-* Hello World
+Add summernote visual editor to TW5 files so that html-based content can be created or edited
+
+Use either text/html or text/x-htmlp content type to be able to use the editor.

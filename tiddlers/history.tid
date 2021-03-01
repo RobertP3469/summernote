@@ -1,6 +1,8 @@
 title: $:/plugins/RobertP3469/summernote/history
 
-V 0.0.1 - beta
+v 1.0.0
+* Added the x-htmlp custom content type
 
+V 0.0.1
 * initial release
 * name: summernote

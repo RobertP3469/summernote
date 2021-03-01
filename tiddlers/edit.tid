@@ -173,7 +173,6 @@ if($tw.browser )   {
 		Handle a dom "input" event
 		*/
 		EditHtmlWidget.prototype.handleInputEvent = function(event) {
-			alert("EditHtmlWidget.prototype.handleInputEvent");
 			this.saveChanges(this.domNodes[0].firstChild.value);
 			//this.fixHeight();
 			return true;
@@ -294,7 +293,7 @@ if($tw.browser )   {
 
 
 		exports["edit-html"] = LoadWidget;
-		
+		exports["edit-x-perimental"] = LoadWidget;
 		
 	})();
 }/* end if($tw.browser )  */
