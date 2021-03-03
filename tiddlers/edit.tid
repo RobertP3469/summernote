@@ -34,7 +34,7 @@ if($tw.browser )   {
 							  ['color', ['color']],
 							  ['para', ['ul', 'ol', 'paragraph']],
 							  ['table', ['table']],
-							  ['insert', ['link', 'picture', 'video', 'summernoteWikiEmbed', 'synonym']],
+							  ['insert', ['link', 'picture', 'video', 'summernoteWikiEmbed']],
 							  ['view', ['fullscreen', 'codeview', 'help']],
 						]
 				});
@@ -233,6 +233,9 @@ if($tw.browser )   {
 					summernote_wiki_embed_js.src = "https://www.wikipress.pub/summernote-wiki-embed/summernote-wiki-embed.js";
 					head.appendChild(summernote_wiki_embed_js);
 
+					var summernote_wiki_embed_toc_js = document.createElement("script");
+					summernote_wiki_embed_toc_js.src = "https://www.wikipress.pub/summernote-wiki-embed/summernote-wiki-embed-toc.js";
+					head.appendChild(summernote_wiki_embed_toc_js);
 				}
 				head.appendChild(summernotejs);
 			}
@@ -293,7 +296,7 @@ if($tw.browser )   {
 
 
 		exports["edit-html"] = LoadWidget;
-		exports["edit-x-perimental"] = LoadWidget;
+		//exports["edit-x-htmlp"] = LoadWidget;
 		
 	})();
 }/* end if($tw.browser )  */

@@ -3,7 +3,7 @@
 	"name": "summernote",
     "description": "Integration of summernote editor.",
     "author": "Robert Payne",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "core-version": ">=5.0.0",
     "source": "https://github.com/RobertP3469/summernote",
 	"list": "readme license",
