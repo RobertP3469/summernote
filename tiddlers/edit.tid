@@ -28,18 +28,17 @@ if($tw.browser )   {
 				$(".tw-summernote-instance textarea").summernote({
 						height: 300,
 						toolbar: [
-							['style', ['bold', 'italic', 'underline', 'clear']],
-							['font', ['strikethrough', 'superscript', 'subscript']],
-							['fontname', ['fontname']],
-							['fontsize', ['fontsize']],
-							['color', ['color']],
-							['para', ['ul', 'ol', 'paragraph']],
-							['table', ['table']],
-							['insert', ['link', 'picture', 'video', 'summernoteWikiEmbed']],
-							['view', ['fullscreen', 'codeview', 'help']],
+							  ['style', ['style', 'bold', 'italic', 'underline', 'clear']],
+							  ['font', ['strikethrough', 'superscript', 'subscript']],
+							  ['fontname', ['fontname']],
+							  ['fontsize', ['fontsize']],
+							  ['color', ['color']],
+							  ['para', ['ul', 'ol', 'paragraph']],
+							  ['table', ['table']],
+							  ['insert', ['link', 'picture', 'video', 'summernoteWikiEmbed']],
+							  ['view', ['fullscreen', 'codeview', 'help']],
 						]
 				});
-
 
 				var el = document.querySelector(".tw-summernote-instance .note-editable");
 				var observer = new MutationObserver(function(mutations) {
