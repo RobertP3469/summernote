@@ -9,6 +9,14 @@ tags: $:/tags/RawMarkup
 
 <style>
 
+.note-float-left{
+	margin: 0.5em 1.4em 1.3em 0;
+}
+
+.note-float-right{
+	margin: 0.5em 0 1.3em 1.4em;
+}
+
 .icon-wikipedia-w{
 	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAJCAIAAACJ2loDAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEZSURBVChTRZC7qoNAEIb1pBAhdilUtEoKC8VWLGzFzlcQn0GwSOsDhLQhkt42YGdhI4IgCDbaeSlEUIREJIVngnDOwO5+88+/sxc0juM0TREEYVm2qqo/2O12JEk2TSOKIlIUxfF4VFV1GIbL5UJRFICiKEmSZFnGcVzbtsj7/fY873A4jOM4TRNN09fr1bIs0B+PB2yb5xmB8Xq9oJnrusDn8xnDsLIsgTVN67oO3D/ruqIoaprm7XYDliRpWZa+7/M8ZxiGIAioomCEy4J6Op2iKHIc5/P5wOnQzzAMQRCg+j0OAqy6rsuybNt2EAQ4jsNTNv3bZVsgfz6f+/2+rmtIeZ6/3++bDvFvgtn3/Y3DMISP2Hie51/SdMgANoY40gAAAABJRU5ErkJggg==) no-repeat;
     width: 12px;
