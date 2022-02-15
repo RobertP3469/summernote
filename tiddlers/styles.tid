@@ -1892,7 +1892,7 @@ ul.mw-collapsible:not(.mw-made-collapsible):before {
         text-align: center;
     }
     a.new {
-        color: #ba0000;
+        color: #ba0000 !important;
     }
     .plainlinks a.external {
         background: none !important;
